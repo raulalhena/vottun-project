@@ -11,4 +11,4 @@ export class User {
   nonce: number;
 }
 
-export default UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);
