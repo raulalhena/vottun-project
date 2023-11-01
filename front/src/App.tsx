@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import React from 'react';
 import './App.css';
-const Home = React.lazy(() => import('./pages/Home'));
+import Home from './pages/Home';
+// const Home = React.lazy(() => import('./pages/Home'));
 
 function App() {
 
