@@ -1,9 +1,10 @@
-import React from 'react'
+import './MetamaskConnection.css';
 
 const MetamaskConnection = () => {
   return (
-    <div>
-        <button>Login with wallet</button>
+    <div className='main'>
+        <img src='/src/assets/socialsecure.png' className='logo'/>
+        <button className='login-button' onClick={console.log('hola')}>Login with wallet</button>
     </div>
   )
 }
