@@ -2,7 +2,10 @@ import MetamaskConnection from '../components/MetamaskConnection/MetamaskConnect
 
 const Home = () => {
   return (
-    <MetamaskConnection />
+    <div className='main'>
+        <img src='/src/assets/socialsecure.png' className='logo'/>
+        <MetamaskConnection />
+    </div>
   )
 }
 
