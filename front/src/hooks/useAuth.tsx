@@ -11,7 +11,7 @@ interface User {
 const useAuth = () => {
 
     const data = useFetch('http://localhost:3000/api/users/');
-    console.log('use auth fetch', data)
+    console.log('use auth fetch', data);
 
     const [ user, setUser ] = useState<User>({
         _id: '',
@@ -20,9 +20,19 @@ const useAuth = () => {
         token: ''
     });
 
-  return (
-    <div>useAuth</div>
-  )
+    const signIn = () => {
+
+    }
+
+    const signUp = () => {
+
+    }
+
+    const signOut = () => {
+        
+    }
+
+    return { user, signIn, signUp, signOut };
 }
 
 export default useAuth
