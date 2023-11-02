@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
+import { AssignNonceDto } from './dto/assign-nonce.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +14,24 @@ export class UsersService {
     try {
       const newUser = await this.userModel.create(createUserDto);
       return newUser;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  generateNonce() {
+    return (Math.random() * 100000).toFixed(0);
+  }
+
+  async assignNonce(assignNonceDto: AssignNonceDto) {
+    try {
+      const nonce = this.generateNonce();
+      const updatedUser = await this.userModel.findOneAndUpdate(
+        { address: assignNonceDto.address },
+        { nonce: nonce },
+        { new: true },
+      );
+      return updatedUser.nonce;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
