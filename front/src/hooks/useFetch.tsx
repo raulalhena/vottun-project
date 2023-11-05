@@ -7,18 +7,21 @@ interface useFetchProps {
 
 const useFetch = ({ url, options = {} }: useFetchProps) => {
 
-    const [ data, setData ] = useState();
+    const [ data, setData ] = useState<unknown>({});
 
     useEffect(() => {
         const request = async () => {
+            console.log('request', url)
             const resp = await fetch(url, options);
             const result = await resp.json();
+
+            console.log('result ', result)
 
             setData(result);
         };
 
         request();
-    });
+    }, []);
     
     return data;
 }

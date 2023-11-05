@@ -1,20 +1,13 @@
 import './MetamaskConnection.css';
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Snackbar } from '@mui/material';
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import SnackbarMessage from '../SnackbarMessage/SnackbarMessage';
+import { SnackbarMessageProps } from '../../interfaces/SnackbarMessage';
 
 const MetamaskConnection = () => {
 
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState({
+  const [message, setMessage] = useState<SnackbarMessageProps>({
     severity: '',
     text: ''
   });
@@ -39,12 +32,11 @@ const MetamaskConnection = () => {
 
   const login = async () => {
     try {
-      console.log('login')
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const address = await signer?.getAddress();
 
-      console.log(provider);
+      console.log('login provider ', provider);
       setProvider(provider);
       setSigner(signer);
       setAccount(address);
@@ -65,7 +57,7 @@ const MetamaskConnection = () => {
   };
 
   const logout = () => {
-    console.log(provider);
+    console.log('logout provider ', provider);
     setIsConnected(false);
     provider.destroy();
     showMessage({ severity: 'warning', text: `Metamask disconnected: ${account}`});
@@ -78,11 +70,7 @@ const MetamaskConnection = () => {
         :
         <button className='login-button' onClick={logout}>Logout</button>
       }
-        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={message.severity} sx={{ width: '100%' }}>
-            {message.text}
-          </Alert>
-        </Snackbar>
+      <SnackbarMessage message={message} open={open} />
     </div>
   )
 }
