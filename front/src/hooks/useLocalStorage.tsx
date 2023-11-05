@@ -2,15 +2,15 @@ import { User } from "../interfaces/User";
 
 const useLocalStorage = () => {
 
-    const setUser = (user: User) => {
-        localStorage.setItem(JSON.stringify(user));
+    const save = (user: User) => {
+        localStorage.setItem(user.address, JSON.stringify(user));
     }
 
-    const unsetUser = (user: User) => {
-        localStorage.removeItem(JSON.parse(user));
+    const remove = (address: string) => {
+        localStorage.removeItem(address);
     }
 
-  return { setUser, unsetUser };
+  return { save, remove };
 }
 
 export default useLocalStorage;

@@ -1,29 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useFetchProps } from "../interfaces/useFetchProps";
 
-interface useFetchProps {
-    url: string;
-    options?: unknown;
-}
+const useFetch = () => {
 
-const useFetch = ({ url, options = {} }: useFetchProps) => {
+    const request = async ({ url, options = {}}: useFetchProps) => {
+        console.log('request', url)
+        const resp = await fetch(url, options);
+        const result = await resp.json();
 
-    const [ data, setData ] = useState<unknown>({});
-
-    useEffect(() => {
-        const request = async () => {
-            console.log('request', url)
-            const resp = await fetch(url, options);
-            const result = await resp.json();
-
-            console.log('result ', result)
-
-            setData(result);
-        };
-
-        request();
-    }, []);
+        console.log('result ', result)
+    };
     
-    return data;
+    return { request };
 }
 
 export default useFetch;

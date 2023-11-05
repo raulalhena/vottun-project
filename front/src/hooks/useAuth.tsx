@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useLocalStorage from 'useLocalStorage';
+import useLocalStorage from "./useLocalStorage";
 import useFetch from "./useFetch";
 
 interface User {
@@ -11,9 +11,8 @@ interface User {
 
 const useAuth = () => {
 
-    const { setUser, unsetUser } = useLocalStorage();
-    const user = useFetch({ url: 'http://localhost:3000/api/users/' });
-    console.log('use auth fetch', data);
+    const { save, remove } = useLocalStorage();
+    const { request } = useFetch();
 
     const [ user, setUser ] = useState<User>({
         _id: '',
@@ -22,13 +21,16 @@ const useAuth = () => {
         token: ''
     });
 
-    const signIn = () => {
-        setUser({
-            _id: user._id,
-            address: user.address,
-            nonce: user.nonce,
+    const signIn = (address: string) => {
+        const userData = request({ url: 'http://localhost:3000/api/users/' });
+        const loggedUser = {
+            _id: userData._id,
+            address: userData.address,
+            nonce: userData.nonce,
             token: ''
-        });
+        }
+        setUser(loggedUser);
+        save(loggedUser);
     }
 
     const signUp = () => {
@@ -36,7 +38,7 @@ const useAuth = () => {
     }
 
     const signOut = () => {
-        unsetUser();
+        remove();
     }
 
     return { user, signIn, signUp, signOut };

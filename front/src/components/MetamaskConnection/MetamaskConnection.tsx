@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import SnackbarMessage from '../SnackbarMessage/SnackbarMessage';
 import { SnackbarMessageProps } from '../../interfaces/SnackbarMessage';
+import useAuth from '../../hooks/useAuth';
 
 const MetamaskConnection = () => {
+
+  const { signIn, signOut } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<SnackbarMessageProps>({
@@ -41,6 +44,7 @@ const MetamaskConnection = () => {
       setSigner(signer);
       setAccount(address);
       setIsConnected(true);
+      signIn(address);
       showMessage({ severity: 'success', text: `Loging success with: ${address}` });
     } catch (error) {
       throw new Error(error.message);
@@ -60,6 +64,7 @@ const MetamaskConnection = () => {
     console.log('logout provider ', provider);
     setIsConnected(false);
     provider.destroy();
+    signOut();
     showMessage({ severity: 'warning', text: `Metamask disconnected: ${account}`});
   };
 
@@ -70,7 +75,7 @@ const MetamaskConnection = () => {
         :
         <button className='login-button' onClick={logout}>Logout</button>
       }
-      <SnackbarMessage message={message} open={open} />
+      <SnackbarMessage message={message} open={open} handleClose={handleClose}/>
     </div>
   )
 }
