@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { AssignNonceDto } from './dto/assign-nonce.dto';
+import { SignInDto } from './dto/signin.dto';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,16 @@ export class UsersService {
 
   generateNonce() {
     return (Math.random() * 100000).toFixed(0);
+  }
+
+  async signIn(signInDto: SignInDto) {
+    try {
+      const user = await this.userModel.findOne({ address: signInDto.address });
+      if (String(user.nonce) === signInDto.signature) return true;
+      return false;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async assignNonce(assignNonceDto: AssignNonceDto) {

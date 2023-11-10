@@ -11,6 +11,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AssignNonceDto } from './dto/assign-nonce.dto';
+import { SignInDto } from './dto/signin.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,6 +25,11 @@ export class UsersController {
   @Post('/nonce')
   assignNonce(@Body() assignNonceDto: AssignNonceDto) {
     return this.usersService.assignNonce(assignNonceDto);
+  }
+
+  @Post('/signin')
+  signIn(@Body() signInDto: SignInDto) {
+    return this.usersService.signIn(signInDto);
   }
 
   @Get()
