@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useLocalStorage from "./useLocalStorage";
 import useFetch from "./useFetch";
+import ethers from 'ethers';
 
 interface User {
     _id: string;
@@ -21,16 +22,23 @@ const useAuth = () => {
         token: ''
     });
 
-    const signIn = async (address: string) => {
+    const signIn = async (address: string, signer: ethers.JsonRpcSigner) => {
+        // console.log('signed message ', await signer.signMessage('18821'))
+        console.log(address)
+        const data = {
+            address: address,
+            signature: await signer.signMessage('18821'),
+        };
+
         const options = {
             method: 'POST',
-            'content-type': 'application/json',
-            body: {
-                address: address,
-                signature: '18821'
-            }
-        }
-        const userData = await request({ url: 'http://localhost:3000/api/users/' }, options);
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        const userData = await request({ url: 'http://localhost:3000/api/users/signin' , options });
         const loggedUser = {
             _id: userData._id,
             address: userData.address,

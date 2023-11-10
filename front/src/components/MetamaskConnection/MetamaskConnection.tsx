@@ -44,7 +44,7 @@ const MetamaskConnection = () => {
       setSigner(signer);
       setAccount(address);
       setIsConnected(true);
-      signIn(address);
+      signIn(address, signer);
       showMessage({ severity: 'success', text: `Loging success with: ${address}` });
     } catch (error) {
       throw new Error(error.message);

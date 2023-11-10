@@ -14,6 +14,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     try {
       const newUser = await this.userModel.create(createUserDto);
+      if (!newUser) this.assignNonce({ address: newUser.address });
       return newUser;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -24,10 +25,16 @@ export class UsersService {
     return (Math.random() * 100000).toFixed(0);
   }
 
+  async checkSignature() {
+    return true;
+  }
+
   async signIn(signInDto: SignInDto) {
+    console.log(signInDto.address);
+    console.log(signInDto.signature);
     try {
       const user = await this.userModel.findOne({ address: signInDto.address });
-      if (String(user.nonce) === signInDto.signature) return true;
+      if (!user) this.create({ address: signInDto.address });
       return false;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
