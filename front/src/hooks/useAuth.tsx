@@ -26,7 +26,8 @@ const useAuth = () => {
             method: 'POST',
             'content-type': 'application/json',
             body: {
-                address: address
+                address: address,
+                signature: '18821'
             }
         }
         const userData = await request({ url: 'http://localhost:3000/api/users/' }, options);
