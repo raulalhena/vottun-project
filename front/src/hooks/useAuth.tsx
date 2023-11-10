@@ -21,8 +21,15 @@ const useAuth = () => {
         token: ''
     });
 
-    const signIn = (address: string) => {
-        const userData = request({ url: 'http://localhost:3000/api/users/' });
+    const signIn = async (address: string) => {
+        const options = {
+            method: 'POST',
+            'content-type': 'application/json',
+            body: {
+                address: address
+            }
+        }
+        const userData = await request({ url: 'http://localhost:3000/api/users/' }, options);
         const loggedUser = {
             _id: userData._id,
             address: userData.address,
