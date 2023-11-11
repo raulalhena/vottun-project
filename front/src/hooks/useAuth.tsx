@@ -23,22 +23,40 @@ const useAuth = () => {
     });
 
     const signIn = async (address: string, signer: ethers.JsonRpcSigner) => {
-        // console.log('signed message ', await signer.signMessage('18821'))
-        console.log(address)
-        const data = {
-            address: address,
-            signature: await signer.signMessage('18821'),
+
+        const nonceData = {
+            address: address
         };
 
-        const options = {
+        const nonceOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(nonceData)
         };
 
-        const userData = await request({ url: 'http://localhost:3000/api/users/signin' , options });
+        console.log('options ', nonceOptions)
+
+        const nonce = await request({ url: 'http://localhost:3000/api/users/nonce', options: nonceOptions });
+        console.log('nonce ', typeof nonce)
+
+        const userData = {
+            address: address,
+            signature: await signer.signMessage(String(nonce))
+        };
+
+        const userOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        };
+
+        const user = await request({ url: 'http://localhost:3000/api/users/signin', options: userOptions });
+        console.log('user ', user);
+
         const loggedUser = {
             _id: userData._id,
             address: userData.address,

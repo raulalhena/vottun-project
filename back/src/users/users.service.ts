@@ -14,7 +14,6 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     try {
       const newUser = await this.userModel.create(createUserDto);
-      if (!newUser) this.assignNonce({ address: newUser.address });
       return newUser;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -34,8 +33,7 @@ export class UsersService {
     console.log(signInDto.signature);
     try {
       const user = await this.userModel.findOne({ address: signInDto.address });
-      if (!user) this.create({ address: signInDto.address });
-      return false;
+      return String(user.nonce) === signInDto.signature;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -44,6 +42,8 @@ export class UsersService {
   async assignNonce(assignNonceDto: AssignNonceDto) {
     try {
       const nonce = this.generateNonce();
+      const user = await this.userModel.findOne({ address: assignNonceDto.address });
+      if (!user) this.create({ address: assignNonceDto.address });
       const updatedUser = await this.userModel.findOneAndUpdate(
         { address: assignNonceDto.address },
         { nonce: nonce },
