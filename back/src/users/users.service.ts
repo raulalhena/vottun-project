@@ -51,11 +51,12 @@ export class UsersService {
     console.log(signInDto.address);
     console.log(signInDto.signature);
     try {
-      const user = await this.userModel.findOne({ address: signInDto.address });
+      const user = await this.userModel.findOne({ address: signInDto.address }).lean();
       if(!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
-      if (!(await this.checkSignature(String(user.nonce), signInDto.signature) === user.address)) 
+      if (!(await this.checkSignature(String(user.nonce), signInDto.signature) === user.address)){
         throw new HttpException('Error checking signature', HttpStatus.UNAUTHORIZED);
+      }
       
       return { 
         ...user,

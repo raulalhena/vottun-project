@@ -58,11 +58,13 @@ const useAuth = () => {
         console.log('user ', user);
 
         const loggedUser = {
-            _id: userData._id,
-            address: userData.address,
-            nonce: userData.nonce,
-            token: ''
+            _id: user._id,
+            address: user.address,
+            nonce: user.nonce,
+            token: user.token
         }
+
+        console.log('logged user ', loggedUser)
         setUser(loggedUser);
         save(loggedUser);
     }

@@ -3,6 +3,7 @@ import { User } from "../interfaces/User";
 const useLocalStorage = () => {
 
     const save = (user: User) => {
+        console.log('user storage ', user)
         localStorage.setItem(user.address, JSON.stringify(user));
     }
 
