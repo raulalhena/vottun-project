@@ -7,10 +7,14 @@ import { User } from './schemas/user.schema';
 import { AssignNonceDto } from './dto/assign-nonce.dto';
 import { SignInDto } from './dto/signin.dto';
 import { ethers } from 'ethers';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
@@ -30,6 +34,19 @@ export class UsersService {
     return ethers.verifyMessage(nonce, signature);
   }
 
+  async generateToken(userId: string, userAddress: string) {
+    try {
+      const userInfo = {
+        userId,
+        userAddress
+      }
+      const token = await this.jwtService.signAsync(userInfo);
+      return token;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async signIn(signInDto: SignInDto) {
     console.log(signInDto.address);
     console.log(signInDto.signature);
@@ -37,8 +54,13 @@ export class UsersService {
       const user = await this.userModel.findOne({ address: signInDto.address });
       if(!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
-      if (await this.checkSignature(String(user.nonce), signInDto.signature) === user.address) return user;
-      throw new HttpException('Error checking signature', HttpStatus.BAD_REQUEST);
+      if (!(await this.checkSignature(String(user.nonce), signInDto.signature) === user.address)) 
+        throw new HttpException('Error checking signature', HttpStatus.UNAUTHORIZED);
+      
+      return { 
+        ...user,
+        token: await this.generateToken(String(user._id), user.address)
+      }
 
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
