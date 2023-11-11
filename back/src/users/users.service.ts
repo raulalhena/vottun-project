@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { AssignNonceDto } from './dto/assign-nonce.dto';
 import { SignInDto } from './dto/signin.dto';
+import { ethers } from 'ethers';
 
 @Injectable()
 export class UsersService {
@@ -24,8 +25,9 @@ export class UsersService {
     return (Math.random() * 100000).toFixed(0);
   }
 
-  async checkSignature() {
-    return true;
+  async checkSignature(nonce: string, signature: string) {
+    console.log('verifing ', ethers.verifyMessage(nonce, signature));
+    return ethers.verifyMessage(nonce, signature);
   }
 
   async signIn(signInDto: SignInDto) {
@@ -33,7 +35,11 @@ export class UsersService {
     console.log(signInDto.signature);
     try {
       const user = await this.userModel.findOne({ address: signInDto.address });
-      return String(user.nonce) === signInDto.signature;
+      if(!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+
+      if (await this.checkSignature(String(user.nonce), signInDto.signature) === user.address) return user;
+      throw new HttpException('Error checking signature', HttpStatus.BAD_REQUEST);
+
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
