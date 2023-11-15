@@ -69,15 +69,11 @@ const useAuth = () => {
         save(loggedUser);
     }
 
-    const signUp = () => {
-
-    }
-
     const signOut = () => {
         remove();
     }
 
-    return { user, signIn, signUp, signOut };
+    return { user, signIn, signOut };
 }
 
 export default useAuth
