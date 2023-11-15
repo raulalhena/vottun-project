@@ -4,10 +4,12 @@ import { ethers } from 'ethers';
 import SnackbarMessage from '../SnackbarMessage/SnackbarMessage';
 import { SnackbarMessageProps } from '../../interfaces/SnackbarMessage';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const MetamaskConnection = () => {
 
-  const { signIn, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { signIn, signOut, user } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<SnackbarMessageProps>({
@@ -55,6 +57,8 @@ const MetamaskConnection = () => {
     if(window.ethereum) {
       showMessage({ severity: 'info', text: 'Metamask detected, connecting...' });
       login();
+      console.log('before navig', user)
+      navigate('/home');
     } else {
       showMessage({ severity: 'error', text: 'Metamask not detected. Is it installed?' });
     }

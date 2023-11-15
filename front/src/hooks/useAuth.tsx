@@ -67,6 +67,8 @@ const useAuth = () => {
         console.log('logged user ', loggedUser)
         setUser(loggedUser);
         save(loggedUser);
+
+        return;
     }
 
     const signOut = () => {
