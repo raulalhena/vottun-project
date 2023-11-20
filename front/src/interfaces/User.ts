@@ -3,4 +3,5 @@ export interface User {
     address: string;
     nonce: number;
     token: string;
+    image: string;
 }

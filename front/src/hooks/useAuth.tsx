@@ -2,13 +2,7 @@ import { useState } from "react";
 import useLocalStorage from "./useLocalStorage";
 import useFetch from "./useFetch";
 import ethers from 'ethers';
-
-interface User {
-    _id: string;
-    address: string;
-    nonce: number;
-    token: string;
-}
+import User from '../interfaces/User';
 
 const useAuth = () => {
 
