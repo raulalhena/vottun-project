@@ -4,12 +4,12 @@ const useLocalStorage = () => {
 
     const save = (user: User) => {
         console.log('user storage ', user)
-        localStorage.setItem(user.address, JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user));
         return;
     }
 
-    const remove = (address: string) => {
-        localStorage.removeItem(address);
+    const remove = () => {
+        localStorage.removeItem('user');
         return;
     }
 

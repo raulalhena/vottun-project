@@ -9,6 +9,8 @@ export class User {
   address: string;
   @Prop()
   nonce: number;
+  @Prop()
+  image: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

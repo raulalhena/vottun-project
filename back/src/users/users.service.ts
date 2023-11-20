@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { AssignNonceDto } from './dto/assign-nonce.dto';
 import { SignInDto } from './dto/signin.dto';
@@ -93,13 +93,33 @@ export class UsersService {
     }
   }
 
+  async savePicture(updateUserDto: UpdateUserDto) {
+    try {
+      let success = false;
+      const updatedUser = await this.userModel.findOneAndUpdate({ _id: mongoose.Schema.Types.ObjectId(updateUserDto._id) }, {
+       image: updateUserDto.image
+      });
+
+      if(!updatedUser) throw new HttpException('Error saving picture', HttpStatus.BAD_REQUEST);
+
+      success = true;
+
+      return {
+        message: 'Picture saved successfully',
+        success
+      }
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} user`;

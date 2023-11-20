@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+import { ObjectId } from "mongoose";
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto{
+    _id: ObjectId;
+    address: string;
+    image: string;
+}

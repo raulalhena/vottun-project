@@ -13,9 +13,10 @@ const WebcamContainer = () => {
 
   const [ image, setImage ] = useState<string>('');
   const [ imageSaved, setImageSaved ] = useState<boolean>(false);
-  const { user } = useAuth();
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const savePicture = async () => {
+    console.log('user ', user)
     user.image = image;
     const resp = await fetch('http://localhost:3000/api/users/save-picture', {
       method: 'PATCH',

@@ -68,6 +68,8 @@ const useAuth = () => {
         remove();
     }
 
+    console.log('use Auth user ', user)
+
     return { user, signIn, signOut };
 }
 
