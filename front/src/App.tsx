@@ -3,7 +3,7 @@ import React from 'react';
 import './App.css';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-// const Home = React.lazy(() => import('./pages/Home'));
+import Admin from './pages/Admin';
 
 function App() {
 
