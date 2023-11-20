@@ -39,7 +39,6 @@ const useAuth = () => {
         console.log('options ', nonceOptions)
 
         const nonce = await request({ url: 'http://localhost:3000/api/users/nonce', options: nonceOptions });
-        console.log('nonce ', typeof nonce)
 
         const userData = {
             address: address,

@@ -1,8 +1,10 @@
-import React from 'react'
+import WebcamContainer from "../components/Webcam/WebcamContainer";
+
 
 const Dashboard = () => {
+
   return (
-    <div>Dashboard</div>
+    <WebcamContainer />
   )
 }
 

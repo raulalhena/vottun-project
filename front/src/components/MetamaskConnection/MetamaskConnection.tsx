@@ -57,8 +57,7 @@ const MetamaskConnection = () => {
     if(window.ethereum) {
       showMessage({ severity: 'info', text: 'Metamask detected, connecting...' });
       login();
-      console.log('before navig', user)
-      navigate('/home');
+      navigate('/dashboard');
     } else {
       showMessage({ severity: 'error', text: 'Metamask not detected. Is it installed?' });
     }
