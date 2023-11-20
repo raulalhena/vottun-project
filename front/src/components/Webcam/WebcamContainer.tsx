@@ -12,6 +12,7 @@ const videoConstraints = {
 const WebcamContainer = () => {
 
   const [ image, setImage ] = useState<string>('');
+  const [ imageSaved, setImageSaved ] = useState<boolean>(false);
   const { user } = useAuth();
 
   const savePicture = async () => {
@@ -24,6 +25,8 @@ const WebcamContainer = () => {
       body: JSON.stringify(user)
     });
     const resul = await resp.json();
+    // TOAST MESSAGE WITH IMAGE SAVED SUCCESSFULLY
+    setImageSaved(resul.success);
     console.log(resul);
   }
 
@@ -50,11 +53,16 @@ const WebcamContainer = () => {
       </Webcam>
     </div>
     :
-    <div className='webcam-div'>
-      <img src={image} className='webcam'/>
-      <button className='dashboard-button' onClick={savePicture}>Save Picture</button>
-    </div>
-
+    !imageSaved ?
+      <div className='webcam-div'>
+        <img src={image} className='webcam'/>
+        <button className='dashboard-button' onClick={savePicture}>Save Picture</button>
+      </div>
+    :
+      <div className='webcam-div'>
+        <img src={image} className='webcam'/>
+        <button className='dashboard-button' onClick={savePicture}>Mint NFT</button>
+      </div>
     )
 }
 
