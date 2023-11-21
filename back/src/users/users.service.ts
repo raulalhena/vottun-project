@@ -96,7 +96,7 @@ export class UsersService {
   async savePicture(updateUserDto: UpdateUserDto) {
     try {
       let success = false;
-      const updatedUser = await this.userModel.findOneAndUpdate({ _id: mongoose.Schema.Types.ObjectId(updateUserDto._id) }, {
+      const updatedUser = await this.userModel.findOneAndUpdate({ _id: updateUserDto._id }, {
        image: updateUserDto.image
       });
 

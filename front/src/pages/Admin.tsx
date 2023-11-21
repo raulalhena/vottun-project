@@ -3,7 +3,7 @@ import AdminDashboard from '../components/AdminDashboard/AdminDashboard';
 
 const Admin = () => {
   return (
-    <div>
+    <div >
         <AdminDashboard />
     </div>
   )

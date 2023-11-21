@@ -2,24 +2,27 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
 
-    const API_KEY = '2XXFo9C1MnoqiOxK4Yem4ZEKuRy';
-
     const deployNFTContract = async () => {
 
         const resp = await fetch('https://api.vottun.tech/erc/v1/erc721/deploy', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'x-application-vkn': API_KEY
+                'x-application-vkn': import.meta.env.APP_ID,
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
-                "name": "Vottun 721 contract",
-                "symbol": "VTN721",
+                "name": "SOCIAL SECURE",
+                "symbol": "SOSE",
                 "network": 80001,
                 "gasLimit": 6000000,
-                "alias": "My first 721 contract"
+                "alias": "Social Secure"
             })
         });
+
+        const result = await resp.json();
+
+        console.log('NFT contract ', result);
     };
 
     return (
