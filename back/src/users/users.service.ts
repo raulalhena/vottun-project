@@ -98,7 +98,9 @@ export class UsersService {
       let success = false;
       const updatedUser = await this.userModel.findOneAndUpdate({ _id: updateUserDto._id }, {
        image: updateUserDto.image
-      });
+      },
+      { new: true }
+      );
 
       if(!updatedUser) throw new HttpException('Error saving picture', HttpStatus.BAD_REQUEST);
 
@@ -106,6 +108,7 @@ export class UsersService {
 
       return {
         message: 'Picture saved successfully',
+        image: updateUserDto.image,
         success
       }
     } catch (error) {

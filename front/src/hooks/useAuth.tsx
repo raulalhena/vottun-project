@@ -13,7 +13,8 @@ const useAuth = () => {
         _id: '',
         address: '',
         nonce: 0,
-        token: ''
+        token: '',
+        image: ''
     });
 
     const signIn = async (address: string, signer: ethers.JsonRpcSigner) => {
@@ -54,7 +55,8 @@ const useAuth = () => {
             _id: user._id,
             address: user.address,
             nonce: user.nonce,
-            token: user.token
+            token: user.token,
+            image: ''
         }
 
         console.log('logged user ', loggedUser)
