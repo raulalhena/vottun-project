@@ -9,8 +9,6 @@ const videoConstraints = {
   facingMode: "user"
 };
 
-console.log('APP_ID ', import.meta.env.VITE_APP_ID);
-
 const WebcamContainer = () => {
 
   const [ image, setImage ] = useState<string>('');
